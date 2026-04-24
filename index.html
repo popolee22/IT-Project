@@ -698,36 +698,107 @@
   </div>
 </section>
 
+<!-- LIGHTBOX OVERLAY -->
+<div id="lightbox" onclick="closeLightbox()" style="
+  display:none; position:fixed; inset:0; z-index:9999;
+  background:rgba(0,0,0,0.92); backdrop-filter:blur(10px);
+  align-items:center; justify-content:center; cursor:zoom-out;
+  flex-direction:column; gap:20px;">
+  <div style="position:relative; max-width:90vw; max-height:88vh;">
+    <img id="lightbox-img" src="" alt="" style="
+      max-width:90vw; max-height:82vh;
+      object-fit:contain; border-radius:14px;
+      box-shadow:0 30px 80px rgba(0,0,0,0.8);
+      animation: lbZoom .25s cubic-bezier(0.16,1,0.3,1);">
+    <button onclick="closeLightbox()" style="
+      position:absolute; top:-18px; right:-18px;
+      width:40px; height:40px; border-radius:50%;
+      background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.2);
+      color:#fff; font-size:20px; cursor:pointer; line-height:1;
+      display:flex; align-items:center; justify-content:center;
+      transition:background .2s;">✕</button>
+  </div>
+  <div id="lightbox-caption" style="font-family:'Plus Jakarta Sans',sans-serif; font-size:15px; color:rgba(255,255,255,0.55); letter-spacing:0.05em;"></div>
+</div>
+
+<style>
+  @keyframes lbZoom {
+    from { opacity:0; transform:scale(0.88); }
+    to   { opacity:1; transform:scale(1); }
+  }
+  .zoomable {
+    cursor: zoom-in;
+    transition: transform .3s ease, box-shadow .3s ease;
+  }
+  .zoomable:hover {
+    transform: scale(1.03);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.7) !important;
+  }
+  .zoom-hint {
+    font-size:13px; color:var(--slate);
+    margin-top:12px; display:flex; align-items:center; gap:6px;
+    justify-content:center; opacity:0.7;
+  }
+</style>
+
 <section class="slide" id="s11">
   <div class="bg-blob" style="width:500px;height:500px;background:var(--teal);top:-150px;right:-150px;opacity:.06;"></div>
   <div class="slide-inner">
     <span class="slide-num fade-up">Slide 11 / The Artifact</span>
     <h2 class="fade-up">UI/UX Prototype Implementation</h2>
     <div class="div-teal fade-up"></div>
-    
+
     <div class="fade-up" style="margin-bottom: 28px;">
       <p style="color:var(--slate); max-width: 850px; font-size:17px;">Visualizing the Access Layer: Demonstrating the <strong style="color:var(--white);">Offline SMS Gateway</strong> and <strong style="color:var(--white);">Elderly (Proxy) Booking</strong> capabilities tailored for Bau's network shadow zones.</p>
     </div>
 
     <div class="grid-2" style="gap:45px; align-items: stretch;">
-      
-      <div class="fade-up card" style="padding: 28px; text-align: center; border-top: 3px solid var(--gold); display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
+
+      <div class="fade-up card" style="padding: 28px; text-align: center; border-top: 3px solid var(--gold); display: flex; flex-direction: column; height: 100%;">
         <h3 style="font-size:18px; color:var(--white); margin-bottom:20px;">Design 1: Localized UI (Bahasa Melayu)</h3>
-        <div style="flex-grow: 1; display: flex; align-items: center; justify-content: center; width: 100%;">
-          <img src="image_b17bc9.jpg" alt="Bau Rural Ride Prototype BM" style="max-width: 100%; max-height: 380px; object-fit: contain; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
+        <div style="flex-grow:1; display:flex; align-items:center; justify-content:center;">
+          <img src="image_b17bc9.jpg" alt="Bau Rural Ride Prototype BM"
+            class="zoomable"
+            onclick="openLightbox(this)"
+            data-caption="Design 1 — Localized UI (Bahasa Melayu)"
+            style="max-width:100%; max-height:360px; object-fit:contain; border-radius:8px; box-shadow:0 10px 25px rgba(0,0,0,0.5);">
         </div>
+        <div class="zoom-hint">🔍 Click to zoom</div>
       </div>
-      
-      <div class="fade-up card" style="padding: 28px; text-align: center; border-top: 3px solid var(--teal); display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
+
+      <div class="fade-up card" style="padding: 28px; text-align: center; border-top: 3px solid var(--teal); display: flex; flex-direction: column; height: 100%;">
         <h3 style="font-size:18px; color:var(--white); margin-bottom:20px;">Design 2: BAU Desa Concept</h3>
-        <div style="flex-grow: 1; display: flex; align-items: center; justify-content: center; width: 100%;">
-          <img src="image_b17bcd.jpg" alt="Bau Desa Prototype English" style="max-width: 100%; max-height: 380px; object-fit: contain; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
+        <div style="flex-grow:1; display:flex; align-items:center; justify-content:center;">
+          <img src="image_b17bcd.jpg" alt="Bau Desa Prototype English"
+            class="zoomable"
+            onclick="openLightbox(this)"
+            data-caption="Design 2 — BAU Desa Concept"
+            style="max-width:100%; max-height:360px; object-fit:contain; border-radius:8px; box-shadow:0 10px 25px rgba(0,0,0,0.5);">
         </div>
+        <div class="zoom-hint">🔍 Click to zoom</div>
       </div>
 
     </div>
   </div>
 </section>
+
+<script>
+  function openLightbox(img) {
+    const lb = document.getElementById('lightbox');
+    document.getElementById('lightbox-img').src = img.src;
+    document.getElementById('lightbox-img').alt = img.alt;
+    document.getElementById('lightbox-caption').textContent = img.dataset.caption || '';
+    lb.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    document.getElementById('lightbox').style.display = 'none';
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeLightbox();
+  });
+</script>
 
 <section class="slide" id="s12" style="background:var(--navy-m);">
   <div class="bg-blob" style="width:400px;height:400px;background:var(--teal);bottom:-120px;right:-80px;opacity:.08;"></div>
@@ -880,12 +951,10 @@
 </section>
 
 <script>
-  // Gather all slides
   const slides = Array.from(document.querySelectorAll('.slide'));
   const navDots = document.getElementById('nav-dots');
   const progressBar = document.getElementById('progress-bar');
 
-  // Create dots
   slides.forEach((_, i) => {
     const dot = document.createElement('div');
     dot.className = 'dot';
@@ -898,18 +967,14 @@
 
   const dots = document.querySelectorAll('.dot');
 
-  // IntersectionObserver for slide visibility
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         const idx = slides.indexOf(entry.target);
         dots.forEach((d, i) => d.classList.toggle('active', i === idx));
-        // progress bar
         const pct = ((idx + 1) / slides.length) * 100;
         progressBar.style.width = pct + '%';
-        // animate fade-up children
         entry.target.querySelectorAll('.fade-up').forEach(el => el.classList.add('visible'));
-        // animate bars if present
         entry.target.querySelectorAll('.bar-fill').forEach(bar => {
           bar.style.width = '0%';
           setTimeout(() => { bar.style.width = bar.dataset.w + '%'; }, 250);
@@ -920,7 +985,6 @@
 
   slides.forEach(s => observer.observe(s));
 
-  // Keyboard navigation
   document.addEventListener('keydown', e => {
     const current = slides.findIndex(s => {
       const rect = s.getBoundingClientRect();
